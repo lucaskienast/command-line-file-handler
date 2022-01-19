@@ -1,25 +1,48 @@
 package cmdfilehandler;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CommandLineFileHandler {
-
+	
 	public static void main(String[] args) {
-		System.out.println("_______COMMAND_LINE_FILE_HANDLER_______");
-		System.out.println("_________(BY_MAX_LUCAS_KIENAST)________");
-		System.out.println();
-		System.out.println("Please choose an option");
-		System.out.println("1) List all files");
-		System.out.println("2) Search for files");
-		System.out.println("3) View a file");
-		System.out.println("4) Edit a file");
-		System.out.println("5) Delete a file");
-		System.out.println("6) Delete ALL files");
-		System.out.println("7) Close this application");
-
+		// start program and show welcome screen
 		Scanner sc = new Scanner(System.in);
-		int userInput;
+		CLFileHandler fileHandler = new CLFileHandler();
+		fileHandler.printWelcomeView();
+		boolean programLive = true;
 		
+		while (programLive) {
+			try {
+				int userProgramChoice = sc.nextInt();
+				switch(userProgramChoice) {
+					case 1:
+						fileHandler.listAllFilesInRoot();
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					case 5:
+						break;
+					case 6:
+						break;
+					case 7:
+						sc.close();
+						System.out.println(">> Command Line File Handler shutting down. Goodbye!");
+						programLive = false;
+						break;
+					default:
+						fileHandler.printInputErrorMessage();
+				}
+			} catch(InputMismatchException e) {
+				// log error to specific file via log4j
+				fileHandler.printInputErrorMessage();
+				sc.nextLine();
+			}			
+		}
 	}
 
 }
