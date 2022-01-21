@@ -1,6 +1,5 @@
 package cmdfilehandler;
 
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -15,7 +14,7 @@ public class CommandLineFileHandler {
 		
 		while (programLive) {
 			try {
-				fileHandler.printUserOptions();
+				fileHandler.printHomeUserOptions();
 				String filename;
 				int userProgramChoice = sc.nextInt();
 				switch(userProgramChoice) {
@@ -44,11 +43,7 @@ public class CommandLineFileHandler {
 					case 6:
 						System.out.println(">> Enter the filename...");
 						filename = sc.next();
-						System.out.println(">> Enter the text to be replaced...");
-						String oldString = sc.next();
-						System.out.println(">> Enter the new text...");
-						String newString = sc.next();
-						fileHandler.updateExistingFile(filename, oldString, newString);
+						fileHandler.crudExistingFile(filename);
 						break;
 					case 7:
 						System.out.println(">> Enter the filename...");
@@ -56,6 +51,7 @@ public class CommandLineFileHandler {
 						fileHandler.deleteExistingFileWithName(filename);
 						break;
 					case 8:
+						fileHandler.deleteAllExistingFiles();
 						break;
 					case 9:
 						sc.close();
@@ -65,6 +61,8 @@ public class CommandLineFileHandler {
 					default:
 						fileHandler.printInputErrorMessage();
 				}
+				System.out.println("_______________________________________");
+
 			} catch(InputMismatchException e) {
 				// log error to specific file via log4j
 				fileHandler.printInputErrorMessage();

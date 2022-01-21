@@ -1,17 +1,20 @@
 package cmdfilehandler;
 
 import java.util.List;
+import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.InputMismatchException;
 
 public class CLFileHandler {
 	
@@ -22,7 +25,7 @@ public class CLFileHandler {
 		System.out.println("_________(BY_MAX_LUCAS_KIENAST)________");
 	}
 	
-	protected void printUserOptions() {
+	protected void printHomeUserOptions() {
 		System.out.println();
 		System.out.println("Please choose an option");
 		System.out.println("1) List all files");
@@ -36,16 +39,34 @@ public class CLFileHandler {
 		System.out.println("9) Close this application");
 	}
 	
+	protected void printCrudUserOptions() {
+		System.out.println();
+		System.out.println("Please choose an option");
+		System.out.println("1) View file");
+		System.out.println("2) Clear file and write from scrap");
+		System.out.println("3) Append to file");
+		System.out.println("4) Replace text in file");
+		System.out.println("5) Delete file");
+		System.out.println("6) Go back");
+	}
+	
 	protected void listAllFilesInRoot() {
 		File dir = new File(rootDir);
 		File[] allFiles = dir.listFiles();
 		System.out.println();
-		System.out.println("All files in root directory:");
-		for (File f : allFiles) {
-			if (f.isFile()) {
-				System.out.println(">> " + f.getName());
+		if (allFiles.length >= 1) {
+			String[] fileNames = new String[allFiles.length];
+			System.out.println("All files in root directory:");
+			for (int i = 0; i < allFiles.length; i++) {
+				if (allFiles[i].isFile()) {
+					fileNames[i] = allFiles[i].getName();
+				}
 			}
-		}
+			HeapSort sorter = new HeapSort(fileNames);
+			sorter.sort(fileNames, fileNames.length);
+		} else {
+			System.out.println("[INFO] - There are no files in the root directory.");
+		}		
 	}
 	
 	protected void createNewFileWithName(String filename) {
@@ -58,6 +79,7 @@ public class CLFileHandler {
 			}
 		} catch(IOException e) {
 			// log exception
+			System.out.println("[WARNING] - You do not have permissions to edit files on your machine...");
 		}
 	}
 	
@@ -67,11 +89,24 @@ public class CLFileHandler {
 			if (result) {
 				System.out.println("[SUCCESS] - Your file was deleted.");
 			} else {
-				System.out.println("[WARNING] - Please give enter an existing filename...");
+				System.out.println("[WARNING] - Please enter an existing filename...");
 			}
 		} catch(NoSuchFileException e) {
-			System.out.println("[WARNING] - Please give enter an existing filename...");
+			System.out.println("[WARNING] - Please enter an existing filename...");
 		} catch(IOException e) {
+			System.out.println("[WARNING] - You do not have permissions to edit files on your machine...");
+		}
+	}
+	
+	protected void deleteAllExistingFiles() {
+		try {
+			File dir = new File(rootDir);
+			File[] allFiles = dir.listFiles();
+			for (File file : allFiles) {
+				Files.deleteIfExists(Paths.get(rootDir + "/" + file.getName()));
+			}
+		} catch(IOException e) {
+			// log exception
 			System.out.println("[WARNING] - You do not have permissions to edit files on your machine...");
 		}
 	}
@@ -86,14 +121,15 @@ public class CLFileHandler {
 					System.out.println(line);
 				}
 			} else {
-				System.out.println("[WARNING] - Please give enter an existing filename...");
+				System.out.println("[WARNING] - Please enter an existing filename...");
 			}
 		} catch(IOException e) {
 			// log exception
+			System.out.println("[WARNING] - You do not have permissions to edit files on your machine...");
 		}
 	}
 	
-	protected void updateExistingFile(String filename, String oldString, String newString) {
+	protected void replaceTextInExistingFile(String filename, String oldString, String newString) {
 		try {
 			String oldContent = "";
 			BufferedReader reader = null;
@@ -112,19 +148,76 @@ public class CLFileHandler {
 			writer.close();
 		} catch(IOException e) {
 			// log exception
-			System.out.println("[WARNING] - Please give enter an existing filename...");
+			System.out.println("[WARNING] - Please enter an existing filename...");
 		} 
+	}
+	
+	protected void clearAndWriteToExistingFile(String filename, String newString) {
+		try {
+			FileOutputStream outputStream = new FileOutputStream(filename);
+			byte[] strToBytes = newString.getBytes();
+			outputStream.write(strToBytes);
+			outputStream.close();
+		} catch(IOException e) {
+			// log exception
+			System.out.println("[WARNING] - Please enter an existing filename...");
+		} 
+	}
+	
+	protected void crudExistingFile(String filename) {
+		if (Files.exists(Paths.get(rootDir + "/" + filename))) {
+			Scanner sc = new Scanner(System.in);
+			boolean crudOpsLive = true;
+			while (crudOpsLive) {
+				try {
+					printCrudUserOptions();
+					int userProgramChoice = sc.nextInt();
+					switch (userProgramChoice) {
+					case 1:
+						printFileContent(filename);
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						System.out.println(">> Enter the text to be replaced...");
+						String oldString = sc.next();
+						System.out.println(">> Enter the new text...");
+						String newString = sc.next();
+						replaceTextInExistingFile(filename, oldString, newString);
+						break;
+					case 5:
+						deleteExistingFileWithName(filename);
+						crudOpsLive = false;
+						break;
+					case 6:
+						crudOpsLive = false;
+						break;
+					default:
+						printInputErrorMessage();
+					}
+				} catch(InputMismatchException e) {
+					// log exception
+					printInputErrorMessage();
+					sc.nextLine();
+				}
+			}
+		} else {
+			System.out.println("[WARNING] - Please enter an existing filename...");
+		}
 	}
 	
 	protected void copyExistingFileIntoRoot(String filePath, String filename) {
 		try {
 			if (Files.exists(Paths.get(filePath))) {
-				Files.move(Paths.get(filePath), Paths.get(rootDir + "/" + filename));
+				Files.move(Paths.get(filePath), Paths.get(rootDir + "/" + filename + ".txt"));
 			} else {
-				System.out.println("[WARNING] - Please give enter an existing filename...");
+				System.out.println("[WARNING] - Please enter an existing filename...");
 			}
 		} catch(IOException e) {
 			// log exception
+			System.out.println("[WARNING] - You do not have permissions to edit files on your machine...");
 		}
 	}
 	

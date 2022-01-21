@@ -1,6 +1,0 @@
-Product Name:	Batman Locker (Small)
-Product ID:		123456789
-Size:			1m x 1m x 2m
-Color:			Black
-Price:			$49.99
-In Stock:		23

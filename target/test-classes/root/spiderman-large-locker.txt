@@ -1,6 +1,0 @@
-Product Name:	Spiderman Locker (Large)
-Product ID:		345678912
-Size:			2m x 1m x 2m
-Color:			Red-Blue
-Price:			$89.99
-In Stock:		9
