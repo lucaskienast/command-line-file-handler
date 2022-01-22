@@ -1,0 +1,5 @@
+Id: 4546
+Name: hkjkm
+Price: 8989
+Color: jnjn
+Inventory: 56

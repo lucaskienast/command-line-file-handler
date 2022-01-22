@@ -3,51 +3,52 @@ package cmdfilehandler;
 import java.util.List;
 import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.InputMismatchException;
 
 public class CLFileHandler {
 	
 	static String rootDir = "src/test/resources/root";
+	static String resourcesDir = "src/main/resources";
 	
 	protected void printWelcomeView() {
 		System.out.println("_______COMMAND_LINE_FILE_HANDLER_______");
 		System.out.println("_________(BY_MAX_LUCAS_KIENAST)________");
+		System.out.println();
+		System.out.println(">> Welcome to the cmd line file handler.");
+		System.out.println(">> This app lets LockedMe.com keep track");
+		System.out.println(">> of their inventory of lockers to sell.");
 	}
 	
 	protected void printHomeUserOptions() {
 		System.out.println();
 		System.out.println("Please choose an option");
 		System.out.println("1) List all files");
-		System.out.println("2) Search for files");
-		System.out.println("3) Create a new file");
-		System.out.println("4) Move file into root");
-		System.out.println("5) View a file");
-		System.out.println("6) Edit a file");
-		System.out.println("7) Delete a file");
-		System.out.println("8) Delete ALL files");
-		System.out.println("9) Close this application");
+		System.out.println("2) Create a new file");
+		System.out.println("3) Move file into root");
+		System.out.println("4) View a file");
+		System.out.println("5) Edit a file");
+		System.out.println("6) Delete ALL files");
+		System.out.println("7) Close this application");
 	}
 	
 	protected void printCrudUserOptions() {
 		System.out.println();
 		System.out.println("Please choose an option");
 		System.out.println("1) View file");
-		System.out.println("2) Clear file and write from scrap");
-		System.out.println("3) Append to file");
-		System.out.println("4) Replace text in file");
-		System.out.println("5) Delete file");
-		System.out.println("6) Go back");
+		System.out.println("2) Edit file");
+		System.out.println("3) Delete file");
+		System.out.println("4) Go back");
 	}
 	
 	protected void listAllFilesInRoot() {
@@ -56,7 +57,7 @@ public class CLFileHandler {
 		System.out.println();
 		if (allFiles.length >= 1) {
 			String[] fileNames = new String[allFiles.length];
-			System.out.println("All files in root directory:");
+			System.out.println(">> All files in root directory:");
 			for (int i = 0; i < allFiles.length; i++) {
 				if (allFiles[i].isFile()) {
 					fileNames[i] = allFiles[i].getName();
@@ -117,11 +118,30 @@ public class CLFileHandler {
 			if (Files.exists(Paths.get(rootDir + "/" + filename))) {
 				lines = Files.readAllLines(Paths.get(rootDir + "/" + filename));
 				System.out.println();
+				System.out.println(">> File content:");
 				for (String line : lines) {
 					System.out.println(line);
 				}
 			} else {
 				System.out.println("[WARNING] - Please enter an existing filename...");
+			}
+		} catch(IOException e) {
+			// log exception
+			System.out.println("[WARNING] - You do not have permissions to edit files on your machine...");
+		}
+	}
+	
+	protected void printWelcomeLogo() {
+		List<String> lines = Collections.emptyList();
+		try {
+			if (Files.exists(Paths.get(resourcesDir + "/" + "ascii-art.txt"))) {
+				lines = Files.readAllLines(Paths.get(resourcesDir + "/" + "ascii-art.txt"));
+				System.out.println();
+				for (String line : lines) {
+					System.out.println(line);
+				}
+			} else {
+				System.out.println("[INFO] - Logo could not be loaded.");
 			}
 		} catch(IOException e) {
 			// log exception
@@ -164,6 +184,27 @@ public class CLFileHandler {
 		} 
 	}
 	
+	protected void writeInventoryFile(String filename) {
+		Scanner sc = new Scanner(System.in);
+		try {
+			File file = new File(rootDir + "/" + filename);
+			FileOutputStream fos = new FileOutputStream(file);
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+			String[] productAttributes = new String[] {"Id", "Name", "Price", "Color", "Inventory"};
+			System.out.println(">> Enter product info...");
+			for (String attr: productAttributes) {
+				System.out.println(">> " + attr + ": ");
+				String newLine = sc.nextLine();
+				bw.write(attr + ": " + newLine + "\n");
+			}
+			bw.close();
+		} catch(IOException e) {
+			// log exception
+			System.out.println("[WARNING] - Machine cannot read input. Contact admin.");
+			sc.close();
+		} 
+	}
+	
 	protected void crudExistingFile(String filename) {
 		if (Files.exists(Paths.get(rootDir + "/" + filename))) {
 			Scanner sc = new Scanner(System.in);
@@ -177,22 +218,15 @@ public class CLFileHandler {
 						printFileContent(filename);
 						break;
 					case 2:
+						writeInventoryFile(filename);
 						break;
 					case 3:
-						break;
-					case 4:
-						System.out.println(">> Enter the text to be replaced...");
-						String oldString = sc.next();
-						System.out.println(">> Enter the new text...");
-						String newString = sc.next();
-						replaceTextInExistingFile(filename, oldString, newString);
-						break;
-					case 5:
 						deleteExistingFileWithName(filename);
 						crudOpsLive = false;
 						break;
-					case 6:
+					case 4:
 						crudOpsLive = false;
+						sc.nextLine();
 						break;
 					default:
 						printInputErrorMessage();
