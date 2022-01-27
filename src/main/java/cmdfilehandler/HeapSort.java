@@ -16,6 +16,7 @@ public class HeapSort {
 	    int child = x;
 	    String tmp;
 	    int index = x / 2;
+	    
 	    while (index >= 0) {
 	        if (heap[index].compareTo(heap[child]) > 0) {
 	            tmp = heap[index];
@@ -32,6 +33,7 @@ public class HeapSort {
 	 
 	static void heapSort() {
 	    int left1, right1;
+	    
 	    while (x >= 0){
 	        String k;
 	        k = heap[0];
@@ -43,6 +45,7 @@ public class HeapSort {
 	        int length = x;
 	        left1 = 1;
 	        right1 = left1 + 1;
+	        
 	        while (left1 <= length){
 	            if (heap[index].compareTo(heap[left1]) <= 0 &&
 	                heap[index].compareTo(heap[right1]) <= 0){

@@ -47,7 +47,13 @@ public class CommandLineFileHandler {
 						fileHandler.crudExistingFile(filename);
 						break;
 					case 6:
-						fileHandler.deleteAllExistingFiles();
+						System.out.println(">> Are you sure you want to delete all files in the root directory? (y/n)");
+						String deleteYesNo = sc.next();
+						if (deleteYesNo.equals("y")) {
+							fileHandler.deleteAllExistingFiles();
+						} else {
+							System.out.println("[INFO] - Did not delete any files.");
+						}
 						break;
 					case 7:
 						sc.close();

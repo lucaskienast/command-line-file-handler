@@ -1,5 +1,0 @@
-Id : 2345
-Name : batman-locker-small.txt
-Price : 199
-Color : blue-red
-Inventory : 4

@@ -1,0 +1,5 @@
+Id: 1234
+Name: ABCD
+Price: 2299.99
+Color: green
+Inventory: 12

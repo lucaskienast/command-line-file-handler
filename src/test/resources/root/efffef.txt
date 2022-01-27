@@ -1,5 +1,0 @@
-Id: 333222
-Name: Brand New Name 12
-Price: 3445.99
-Color: green
-Inventory: 2233

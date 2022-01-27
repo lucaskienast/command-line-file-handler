@@ -1,5 +1,0 @@
-Id: 1234abcd
-Name: Cool Locker Large
-Price: 122.99
-Color: black
-Inventory: 45

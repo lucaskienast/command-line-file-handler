@@ -106,6 +106,7 @@ public class CLFileHandler {
 			for (File file : allFiles) {
 				Files.deleteIfExists(Paths.get(rootDir + "/" + file.getName()));
 			}
+			System.out.println("[INFO] - Deleted all files in root directory.");
 		} catch(IOException e) {
 			// log exception
 			System.out.println("[WARNING] - You do not have permissions to edit files on your machine...");
