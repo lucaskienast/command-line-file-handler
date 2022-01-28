@@ -1,0 +1,5 @@
+Id: 333333
+Name: Ironman Locker
+Price: 99.99
+Color: red-yellow
+Inventory: 2

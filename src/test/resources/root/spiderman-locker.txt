@@ -1,0 +1,5 @@
+Id: 111111
+Name: Spiderman Locker
+Price: 199.99
+Color: blue-red
+Inventory: 100

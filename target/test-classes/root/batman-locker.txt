@@ -1,0 +1,5 @@
+Id: 222222
+Name: Batman Locker
+Price: 299.99
+Color: black
+Inventory: 19
