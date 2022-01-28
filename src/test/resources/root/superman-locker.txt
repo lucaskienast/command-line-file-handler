@@ -1,0 +1,5 @@
+Id: 4444444
+Name: Superman Locker
+Price: 39.99
+Color: red-blue
+Inventory: 87

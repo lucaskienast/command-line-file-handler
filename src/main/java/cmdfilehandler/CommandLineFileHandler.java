@@ -8,7 +8,6 @@ public class CommandLineFileHandler {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		CLFileHandler fileHandler = new CLFileHandler();
-		fileHandler.printWelcomeLogo();
 		System.out.println();
 		fileHandler.printWelcomeView();
 		boolean programLive = true;
