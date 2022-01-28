@@ -111,7 +111,6 @@ public class CLFileHandler {
 		}		
 	}
 	
-	// write test
 	private File[] getAllFilesInRoot() {
 		File dir = new File(rootDir);
 		File[] allFiles = dir.listFiles();

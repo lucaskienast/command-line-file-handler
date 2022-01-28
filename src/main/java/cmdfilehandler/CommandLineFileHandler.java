@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class CommandLineFileHandler {
 	
 	public static void main(String[] args) {
-		// start program and show welcome screen
 		Scanner sc = new Scanner(System.in);
 		CLFileHandler fileHandler = new CLFileHandler();
 		fileHandler.printWelcomeLogo();
