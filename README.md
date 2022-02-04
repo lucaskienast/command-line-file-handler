@@ -1,5 +1,5 @@
 # Command Line File Handler
-Maven (Java) project that performs CRUD operations on files in a given root directory
+Maven (Java) project that performs CRUD operations on files in a given root directory using the command line.
 
 ## Java Concepts Used
 - OOP: encapsulation, inheritance, abstraction, polymorphism
