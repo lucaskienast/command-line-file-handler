@@ -1,5 +1,5 @@
 # Command Line File Handler
-Maven (Java) project that performs CRUD operations on inventory files in a given root directory using the command line and an input template.
+Java project using Maven as a build tool that performs CRUD operations on inventory files in a given root directory using the command line and an input template.
 
 ## Java Concepts Used
 - OOP: encapsulation, inheritance, abstraction, polymorphism
